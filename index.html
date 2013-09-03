@@ -111,7 +111,19 @@ var t=b.contentWindow[g];t.write(p());t.close()}catch(x){
 b[k]=o+'d.write("'+p().replace(/"/g,String.fromCharCode(92)+'"')+'");d.close();'}a.P(2)};ld()};nt()})({
 loader: "static.olark.com/jsclient/loader0.js",name:"olark",methods:["configure","extend","declare","identify"]});
 /* custom configuration goes here (www.olark.com/documentation) */
-olark.identify('6982-243-10-2002');/*]]>*/</script><noscript><a href="https://www.olark.com/site/6982-243-10-2002/contact" title="Contact us" target="_blank">Questions? Feedback?</a> powered by <a href="http://www.olark.com?welcome" title="Olark live chat software">Olark live chat software</a></noscript>
+/* Olarktopus ID: 6982-243-10-2002 */
+olark.identify('9353-431-10-4341');/*]]>*/</script><noscript><a href="https://www.olark.com/site/6982-243-10-2002/contact" title="Contact us" target="_blank">Questions? Feedback?</a> powered by <a href="http://www.olark.com?welcome" title="Olark live chat software">Olark live chat software</a></noscript>
 <!-- end olark code -->
+
+<script>
+olark('api.chat.onCommandFromOperator', function(event) {
+    if (event.command.name == 'lead') {
+        console.log('lead command');
+    }
+    else if (event.command.name == 'faq') {
+        console.log('FAQ command');
+    }
+});
+</script
 </body>
 </title>
