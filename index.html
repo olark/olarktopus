@@ -118,6 +118,7 @@ olark.identify('6982-243-10-2002');/*]]>*/</script><noscript><a href="https://ww
 <!-- end olark code -->
 
 <script>
+olark('api.visitor.updateCustomFields', {internalCustomerId: 'TEST'});
 olark('api.chat.onCommandFromOperator', function(event) {
     if (event.command.name == 'lead') {
         console.log('lead command');
