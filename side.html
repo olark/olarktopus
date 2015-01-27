@@ -20,7 +20,7 @@
 		padding: 10px;
 		font-size: 14px;
 		line-height: 14px;
-		text-align: center;    
+		text-align: center;
 	}
 
 	#olark-box-wrapper {
@@ -90,22 +90,47 @@ olark.identify('6982-243-10-2002');/*]]>*/</script><noscript><a href="https://ww
 	// Set the Olark chatbox to appear inline
     olark.configure('box.inline', true);
 
-    // Javacript function to toggle the class of the chat box wrapper
-    function changeClass()
-    {
-    	// Get the HTML object containing the Olark chat box
-    	var olark_wrapper = document.getElementById("olark-box-wrapper");
+    // Keep things from polluting the global namespace, except changeClass, which we want accessible
+    var changeClass;
 
-    	// If the chat box is already open, close id
-    	if ( olark_wrapper.className.match(/(?:^|\s)chatbox-open(?!\S)/) ) {
-    		olark_wrapper.className = "chatbox-closed";
-    	}
-    	// Otherwise add open the Olark chat box
-    	else {    		
-    		olark_wrapper.className = "chatbox-open";
-    	}
-        
-    }
+    (function (d, olk) {
+        // These functions are helpers for the below
+        function getOlarkWrapper() {
+            return d.getElementById("olark-box-wrapper");
+        }
+
+        function setOlarkVisible(olark_wrapper) {
+            olark_wrapper.className = "chatbox-open";
+        }
+
+        function setOlarkHidden(olark_wrapper) {
+            olark_wrapper.className = "chatbox-closed";
+        }
+
+        function olarkIsVisible(olark_wrapper) {
+            return olark_wrapper.className.match(/(?:^|\s)chatbox-open(?!\S)/);
+        }
+
+        // This is used by the link to show/hide the inline page element
+        changeClass = function() {
+            var olark_wrapper = getOlarkWrapper();
+            // Get the HTML object containing the Olark chat box
+            // If the chat box is already open, close id
+            if (olarkIsVisible(olark_wrapper)) {
+                setOlarkHidden(olark_wrapper);
+            } else {
+                setOlarkVisible(olark_wrapper);
+            }
+        }
+
+        // This is used to cause the box to auto-open if a visitor is already in conversation
+        olk('api.visitor.getDetails', function (details) {
+            if (details.isConversing) {
+                setOlarkVisible(getOlarkWrapper());
+            }
+        });
+    }(document, olark));
+
 </script>
 
 </body>
