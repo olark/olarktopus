@@ -108,11 +108,11 @@
             width: auto;
             font-size: 14px;
         }
-        .demo-chatbox.available-prechat {
+        .demo-chatbox[data-state='available-prechat'] {
             display: block;
         }
-        .demo-chatbox.available-chatting,
-        .demo-chatbox.offline-message {
+        .demo-chatbox[data-state='available-chatting'],
+        .demo-chatbox[data-state='offline-message'] {
             display: none;
         }
     </style>
@@ -193,14 +193,26 @@
 
                 // Detect changes to demo chat box
                 if (fieldID) {
-                    var apiString = $('#api-list').find("[data-target='" + fieldID + "']").data('api');
-                    $("#api-list [data-target='" + fieldID + "']").text(text);
 
-                    if ($(this).is('input:text') || $(this).is('textarea')) {
-                        $("#api-list [data-target='" + fieldID + "']").val(text);
+                    // The Chat Header doesn't vary by state
+                    // We have to detect what the radio button state is
+                    // Then go find the correct cell in the table
+                    if (fieldID == "habla_oplink_a") {
+                        var state = $('input[name=demo-chatbox]:checked').val();
+                        apiString = $('#api-list').find("[data-state='" + state + "']").data('api');
+                        $("#api-list [data-state='" + state + "']").text(text);
                     }
                     else {
-                        $("#api-list [data-target='" + fieldID + "']").text(text);
+
+                        apiString = $('#api-list').find("[data-target='" + fieldID + "']").data('api');
+
+                        // Placeholders have values, not text
+                        if ($(this).is('input:text') || $(this).is('textarea')) {
+                            $("#api-list [data-target='" + fieldID + "']").val(text);
+                        }
+                        else {
+                            $("#api-list [data-target='" + fieldID + "']").text(text);
+                        }
                     }
 
                     addToConfigurator(fieldID, apiString, escapedText);
@@ -217,6 +229,10 @@
               );
 
             $('input[type=radio][name=demo-chatbox]').on('change', function() {
+
+                var currentStateText = $('#api-list').find("[data-state='" + $(this).val() + "']").text();
+                $('#habla_oplink_a').text(currentStateText);
+
                 switch($(this).val()) {
                     case 'habla_pre_chat_div':
                         $('#habla_pre_chat_div').show();
@@ -295,15 +311,15 @@
 </thead>
 <tbody>
 <tr>
-    <td contenteditable data-target="habla_oplink_a" data-api="locale.welcome_title" data-status="available">Click to Chat</td>
+    <td contenteditable data-target="habla_oplink_a" data-api="locale.welcome_title" data-state="habla_pre_chat_div">Click to Chat</td>
     <td>Clickable header that expands and minimizes the chat box.</td>
 </tr>
 <tr>
-    <td contenteditable data-target="habla_oplink_a" data-api="locale.chatting_title">Live Help: Now Chatting</td>
+    <td contenteditable data-target="habla_oplink_a" data-api="locale.chatting_title" data-state="habla_conversation_div">Live Help: Now Chatting</td>
     <td>Clickable header text that appears once a conversation has started.</td>
 </tr>
 <tr>
-    <td contenteditable data-target="habla_oplink_a" data-api="locale.unavailable_title" data-status="offline">Live Help: Offline</td>
+    <td contenteditable data-target="habla_oplink_a" data-api="locale.unavailable_title" data-state="habla_offline_message_div">Live Help: Offline</td>
     <td>Clickable header text that appears when no operators are available.</td>
 </tr>
 <tr>
@@ -539,7 +555,7 @@
 
 </div>
 <div class="demo-chatbox-wrapper">
-    <div class="demo-chatbox available-prechat" id="demo-chatbox">
+    <div class="demo-chatbox available-prechat" data-state="available-prechat" id="demo-chatbox">
         <!-- Available + Pre-Chat survey -->
         <div id="habla_beta_container_do_not_rely_on_div_classes_or_names" class="habla-browser-chrome habla-desktop olrk-noquirks"><div id="hbl_operator_state_div" class="olrk-available"><div id="hbl_region" class="olrk-normal"><div id="habla_window_state_div" class="olrk-state-expanded"><div id="habla_window_div" style="margin: 0px 20px; bottom: 0px; right: 0px; display: none; position: fixed;" class="habla_window_div_base hbl_pal_main_width olrk-fixed-bottom olrk-fixed-right "><div id="habla_compressed_div" style="display: none;"></div><div id="habla_panel_div" class="habla_panel_border hbl_pal_main_bg hbl_pal_panel_border hbl_pal_main_font_family hbl_pal_main_font_size " style="display: block;"><div id="habla_both_div" style="display: block;"><div id="habla_topbar_div" class="habla_topbar_div_normal habla_topbar_clickable hbl_pal_title_fg hbl_pal_title_bg habla_topbar_div_expanded "><a id="habla_sizebutton_a" class="habla_button habla_button_a_normal hbl_pal_header_font_size hbl_pal_main_font_family hbl_pal_button_bg hbl_pal_button_fg ">_</a><a id="habla_oplink_a" class="habla_oplink_a_normal hbl_pal_header_font_size hbl_pal_title_fg ">Chat with us!</a></div></div><div id="habla_expanded_div" style="display: block;"><div id="habla_middle_div"><div id="habla_middle_wrapper_div"><div id="habla_conversation_div" class="hbl_panel habla_conversation_div hbl_pal_main_height hbl_pal_control_border hbl_pal_main_fg hbl_pal_main_bg   habla_conversation_message_on " style="height: 155px; overflow: auto; display: none;"><span id="hbl_body_message">Questions? We'd love to chat!</span></div><div id="habla_offline_message_sent_div" class="hbl_panel habla_offline_message_sent_div hbl_pal_main_height hbl_pal_control_border hbl_pal_main_fg " style="display: none;">Thanks for your message!  We'll get back to you shortly.</div><div id="habla_offline_message_div" class="hbl_panel habla_offline_message_div hbl_pal_control_border hbl_pal_main_fg " style="display: none;"><span id="habla_offline_message_span"><span id="habla_offline_message_span">We're not around, but we'd love to chat another time.</span></span><div class="hbl_txt_wrapper"><textarea id="habla_name_input" name="habla_name_input" class="habla_wcsend_field habla_wcsend_input_pre habla_wcsend_input_normal hbl_pal_input_pre_fg hbl_pal_main_font_family hbl_pal_input_font_size hbl_pal_control_border " placeholder="&lt;click here&gt;
          and type your Name" style="height: 20px; display: block;"></textarea></div><div class="hbl_txt_wrapper"><textarea id="habla_offline_email_input" name="habla_offline_email_input" class="habla_wcsend_field habla_wcsend_input_pre habla_wcsend_input_normal hbl_pal_input_pre_fg hbl_pal_main_font_family hbl_pal_input_font_size hbl_pal_control_border " placeholder="&lt;click here&gt; and type your Email" style="height: 20px; display: block;"></textarea></div><div class="hbl_txt_wrapper"><textarea id="habla_offline_phone_input" name="habla_offline_phone_input" class="habla_wcsend_field habla_wcsend_input_pre habla_wcsend_input_normal hbl_pal_input_pre_fg hbl_pal_main_font_family hbl_pal_input_font_size hbl_pal_control_border " placeholder="&lt;click here&gt; and type your Phone" style="height: 20px; display: block;"></textarea></div><div class="hbl_txt_wrapper"><textarea id="habla_offline_body_input" name="habla_offline_body_input" class="habla_wcsend_field habla_wcsend_input_pre habla_wcsend_input_normal hbl_pal_input_pre_fg hbl_pal_main_font_family hbl_pal_input_font_size hbl_pal_control_border " placeholder="We're not around but we still want to hear from you!  Leave us a note:" style="height: 70px; display: block;"></textarea></div><span id="habla_offline_error_span" class="habla_offline_error_span "></span><input id="habla_offline_submit_input" name="habla_offline_submit_input" type="submit" class="habla_offline_submit_input hbl_pal_offline_submit_fg hbl_pal_control_border hbl_pal_offline_submit_bg " value="Send" style="display: block;"><div id="habla_offline_clear_div" class="clear_style "></div></div><div id="habla_pre_chat_div" class="hbl_panel habla_pre_chat_div hbl_pal_main_height hbl_pal_main_fg " style="display: block; height: 155px;"><span id="habla_pre_chat_span">Hi, I am around, click 'start chatting' to contact me.</span><div class="hbl_txt_wrapper"><textarea id="habla_pre_chat_name_input" name="habla_pre_chat_name_input" class="habla_wcsend_field habla_wcsend_input_pre habla_wcsend_input_normal hbl_pal_input_pre_fg hbl_pal_main_font_family hbl_pal_input_font_size hbl_pal_control_border " placeholder="&lt;click here&gt; and type your Name" style="height: 20px; line-height: 20px;"></textarea></div><div class="hbl_txt_wrapper"><textarea id="habla_pre_chat_email_input" name="habla_pre_chat_email_input" class="habla_wcsend_field habla_wcsend_input_pre habla_wcsend_input_normal hbl_pal_input_pre_fg hbl_pal_main_font_family hbl_pal_input_font_size hbl_pal_control_border " placeholder="&lt;click here&gt; and type your Email" style="height: 20px; line-height: 20px;"></textarea></div><div class="hbl_txt_wrapper"><textarea id="habla_pre_chat_phone_input" name="habla_pre_chat_phone_input" class="habla_wcsend_field habla_wcsend_input_pre habla_wcsend_input_normal hbl_pal_input_pre_fg hbl_pal_main_font_family hbl_pal_input_font_size hbl_pal_control_border " placeholder="&lt;click here&gt; and type your Phone" style="height: 20px; line-height: 20px;"></textarea></div><span id="habla_pre_chat_error_span">Please enter your name and email in case we get disconnected.</span><input id="habla_pre_chat_submit_input" name="habla_pre_chat_submit_input" type="submit" class="habla_pre_chat_form_field habla_offline_submit_input hbl_pal_offline_submit_fg hbl_pal_control_border hbl_pal_offline_submit_bg " value="Click here to start chatting"><div id="habla_pre_chat_clear_div" class="clear_style "></div></div></div><form id="habla_chatform_form" action="#" method="GET" autocomplete="off" class="habla_chatform_form " style="display: none;"><div id="habla_input_div" class="habla_input_div "><div class="hbl_txt_wrapper"><textarea id="habla_wcsend_input" name="habla_wcsend_input" size="undefined" class="habla_wcsend_field habla_wcsend_input_pre habla_wcsend_input_normal hbl_pal_input_pre_fg hbl_pal_main_font_family hbl_pal_input_font_size hbl_pal_control_border " placeholder="Type here and hit enter to chat" style="line-height: 20px; height: 20px; display: block;"></textarea></div></div></form></div><div style="font-family: helvetica, sans-serif; text-align: center; text-transform: uppercase; font-size: 9px; letter-spacing: 2px; font-weight: bold; padding: 3px 0px 5px !important; color: rgb(170, 170, 170) !important; clear: both;"><span style="display:none"><a id="hblink9" style="font-family: helvetica, sans-serif; text-transform: uppercase; font-size: 9px !important; letter-spacing: 2px; font-weight: bold; color: #e75917 !important;"></a>http://www.olark.com</span>Powered By <a style="font-family: helvetica, sans-serif; text-transform: uppercase; font-size: 9px !important; letter-spacing: 2px; font-weight: bold; color: #e75917 !important;" href="http://www.olark.com/welcome/?rid=2011-843-10-1469&amp;rid=2011-843-10-1469&amp;powered_f=1&amp;utm_medium=widget&amp;utm_campaign=powered_by_free&amp;utm_source=2011-843-10-1469" id="hblink99" target="_blank" rel="nofollow">Olark</a></div></div></div><div id="habla_closed_div" style="display: none;"></div></div></div></div></div></div>
