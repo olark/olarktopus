@@ -118,6 +118,17 @@
     <script>
         $(function() {
 
+            var localizations = {};
+
+            if (localStorage.getItem("localizations")) {
+                localizations = JSON.parse(localStorage.getItem('localizations'));
+                $.each(localizations, function(key, val) {
+
+                    // Find the matching API locale in the table and update the text
+                    $('#api-list [data-api="' + key + '"]').text(val);
+                });
+            }
+
             editableFieldIDs = [
                 'habla_oplink_a',
                 'habla_pre_chat_span',
@@ -267,6 +278,10 @@
                 } else {
                     $el.replaceWith(str);
                 }
+
+                // Create an object we can store the changes in on reload
+                localizations[apiString] = text;
+                localStorage.setItem('localizations', JSON.stringify(localizations));
             }
         });
     </script>
