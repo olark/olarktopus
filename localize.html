@@ -5,8 +5,6 @@
     <!--
     To-do:
     * Show other states (Feedback survey, cobrowsing)
-    * Add new language option
-    * Add JS for detecting visitor language pref
     -->
 
     <!-- Make sure image paths work -->
@@ -247,24 +245,15 @@
                 switch($(this).val()) {
                     case 'habla_pre_chat_div':
                         $('#habla_pre_chat_div').show();
-                        $('#habla_conversation_div').hide();
-                        $('#habla_chatform_form').hide();
-                        $('#habla_offline_message_div').hide();
-                        $('#habla_offline_message_span').hide();
+                        $('#habla_conversation_div, #habla_chatform_form, #habla_offline_message_div, #habla_offline_message_span').hide();
                         break;
                     case 'habla_conversation_div':
                         $('#habla_pre_chat_div').hide();
-                        $('#habla_conversation_div').show();
-                        $('#habla_chatform_form').show();
-                        $('#habla_offline_message_div').hide();
-                        $('#habla_offline_message_span').hide();
+                        $('#habla_conversation_div, #habla_chatform_form, #habla_offline_message_div, #habla_offline_message_span').show();
                         break;
                     case 'habla_offline_message_div':
-                        $('#habla_pre_chat_div').hide();
-                        $('#habla_conversation_div').hide();
-                        $('#habla_chatform_form').hide();
-                        $('#habla_offline_message_div').show();
-                        $('#habla_offline_message_span').show();
+                        $('#habla_pre_chat_div, #habla_conversation_div, #habla_chatform_form').hide();
+                        $('#habla_offline_message_div, #habla_offline_message_span').show();
                         break;
                 }
                 $('#habla_pre_chat_div, #habla_conversation_div, #habla_offline_message_div').hide();
