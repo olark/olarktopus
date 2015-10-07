@@ -27,6 +27,60 @@
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             font-size: 14px;
             line-height: 1.5em;
+            background: #F6FCFE;
+            margin: 40px 0;
+        }
+        .group:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        .editor, .options-container {
+            margin: 0 auto;
+            max-width: 1160px;
+            padding: 0 40px;
+            width: 100%;
+        }
+        .options {
+            background: #fff;
+            padding: 13px 15px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            border: 1px solid #EAECEC;
+        }
+        .label-radio {
+            padding: 6px 16px 8px;
+            font-size: 16px;
+            display: inline-block;
+        }
+        .btn-container {
+            float: right;
+        }
+        .small-btn {
+            font-size: 16px;
+            padding: 6px 16px 8px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            font-family: freight-sans-pro,"Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-weight: 800;
+        }
+        .primary-btn-green {
+            background: #49c219;
+            color: #fff;
+            border: 0;
+        }
+        .primary-btn-green:hover {
+            background: #399a13;
+        }
+        .tertiary-btn {
+            background: #fff;
+            color: #1fb3e0;
+            border: 1px solid #a7def1;
+        }
+        .tertiary-btn:hover {
+            border: 1px solid #1fb3e0;
+            color: #188fb4;
         }
         .pure-menu {
             padding: .5em 1em;
@@ -39,6 +93,9 @@
             text-align: left;
             vertical-align: top;
             border-color: #eaecec;
+        }
+        .pure-table td {
+            background-color: #fff;
         }
         .pure-table-bordered td {
             border-color: #eaecec;
@@ -260,7 +317,7 @@
                 $("#" + $(this).val()).show();
             });
 
-            $('#reset').click(function(e){
+            $('#resetLocalizations').click(function(e){
                 e.preventDefault();
                 localStorage.removeItem("localizations");
                 location.reload();
@@ -284,21 +341,16 @@
 </head>
 <body>
 
-    <div class="pure-menu pure-menu-horizontal">
-        <ul class="pure-menu-list">
-            <li class="pure-menu-item">
-                <label><input type="radio" name="demo-chatbox" value="habla_pre_chat_div" checked> Pre-chat survey</label>&emsp;
-            </li>
-            <li class="pure-menu-item">
-                <label><input type="radio" name="demo-chatbox" value="habla_conversation_div"> Active conversation</label>&emsp;
-            </li>
-            <li class="pure-menu-item">
-                <label><input type="radio" name="demo-chatbox" value="habla_offline_message_div"> Offline message form</label>&emsp;
-            </li>
-            <li class="pure-menu-item">
-                <button id="reset">Reset localizations</button>
-            </li>
-        </ul>
+    <div class="options-container">
+        <div class="options group">
+            <label class="label-radio"><input type="radio" name="demo-chatbox" value="habla_pre_chat_div" checked> Pre-chat survey</label>
+            <label class="label-radio"><input type="radio" name="demo-chatbox" value="habla_conversation_div"> Active conversation</label>
+            <label class="label-radio"><input type="radio" name="demo-chatbox" value="habla_offline_message_div"> Offline message form</label>
+            <div class="btn-container">
+                <button class="primary-btn-green small-btn" id="showCode">Show code</button>
+                <button class="tertiary-btn small-btn" id="resetLocalizations">Reset</button>
+            </div>
+        </div>
     </div>
 
     <div class="editor">
