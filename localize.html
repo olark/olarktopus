@@ -125,6 +125,8 @@
 
                     // Find the matching API locale in the table and update the text
                     $('#api-list [data-api="' + key + '"]').text(val);
+
+                    addToConfigurator(key, val);
                 });
             }
 
@@ -197,7 +199,7 @@
                     else {
                         $('#' + target).text(text);
                     }
-                    addToConfigurator(target, apiString, escapedText);
+                    addToConfigurator(apiString, escapedText);
                 }
 
                 // Detect changes to demo chat box
@@ -224,7 +226,7 @@
                         }
                     }
 
-                    addToConfigurator(fieldID, apiString, escapedText);
+                    addToConfigurator(apiString, escapedText);
                 }
 
             });
@@ -269,8 +271,14 @@
                 $("#" + $(this).val()).show();
             });
 
-            function addToConfigurator(target, apiString, text){
-                var str = '<span data-api="' + apiString + '" data-target="' + target + '">olark.configure("' + apiString + '", "'  + text + '");</span>';
+            $('#reset').click(function(e){
+                e.preventDefault();
+                localStorage.removeItem("localizations");
+                location.reload();
+            });
+
+            function addToConfigurator(apiString, text){
+                var str = '<span data-api="' + apiString + '">olark.configure("' + apiString + '", "'  + text + '");</span>';
                 var $el = $("#lang-changes").find("[data-api='" + apiString + "']");
                 if (!$el.length) {
                     $('#lang-changes').append(str + '<br>');
@@ -289,15 +297,6 @@
 
     <div class="pure-menu pure-menu-horizontal">
         <ul class="pure-menu-list">
-            <!--
-            <li class="pure-menu-item">
-                <select id="lang-selector">
-                    <option>English</option>
-                    <option data-action="new-lang">Add new...</option>
-                </select>
-                &emsp;
-            </li>
-            -->
             <li class="pure-menu-item">
                 <label><input type="radio" name="demo-chatbox" value="habla_pre_chat_div" checked> Pre-chat survey</label>&emsp;
             </li>
@@ -306,6 +305,9 @@
             </li>
             <li class="pure-menu-item">
                 <label><input type="radio" name="demo-chatbox" value="habla_offline_message_div"> Offline message form</label>&emsp;
+            </li>
+            <li class="pure-menu-item">
+                <button id="reset">Reset localizations</button>
             </li>
         </ul>
     </div>
